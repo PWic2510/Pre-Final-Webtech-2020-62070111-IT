@@ -39,34 +39,17 @@
         $name = $_POST['place'];
         $found = 0;
         $same = 1;
+        $arrayfound = array();
         for ($i=0; $i < 6 ; $i+= 1) { 
           
             if((!strcmp(strtolower($result -> tracks -> items[$i] -> album -> name), strtolower($name)) || strstr(strtolower($result -> tracks -> items[$i] -> album -> name), strtolower($name))) && $same ){
-                
-            echo '<div class="card" style="width: 18rem;">';
-            echo '<img class="card-img-top" src="'.$result -> tracks -> items[$i] -> album -> images[0] -> url.'" alt="Card image cap">';
-            echo '<div class="card-body">';
-            echo '<h5 class="card-title">'.$result -> tracks -> items[$i] -> album -> name.'</h5>';
-            echo '<div class="card-text">Artists : '.$result -> tracks -> items[$i] -> album -> artists[0] -> name.'</div>';
-            echo '<div class="card-text">Release date : '.$result -> tracks -> items[$i] -> album -> release_date .'</div>';
-            echo '<div class="card-text">Avaliable : '.count($result -> tracks -> items[$i] -> album -> available_markets) .' countries </div>';
-            echo '</div>';
-            echo '</div>';
+              $arrayfound[] = $i;
             
                 $found += 1;
                 $same = 0;
             }
             if((!strcmp(strtolower($result -> tracks -> items[$i] -> album -> artists[0] -> name), strtolower($name)) || strstr(strtolower($result -> tracks -> items[$i] -> album -> artists[0] -> name), strtolower($name))) && $same ){
-                
-            echo '<div class="card" style="width: 18rem;">';
-            echo '<img class="card-img-top" src="'.$result -> tracks -> items[$i] -> album -> images[0] -> url.'" alt="Card image cap">';
-            echo '<div class="card-body">';
-            echo '<h5 class="card-title">'.$result -> tracks -> items[$i] -> album -> name.'</h5>';
-            echo '<div class="card-text">Artists : '.$result -> tracks -> items[$i] -> album -> artists[0] -> name.'</div>';
-            echo '<div class="card-text">Release date : '.$result -> tracks -> items[$i] -> album -> release_date .'</div>';
-            echo '<div class="card-text">Avaliable : '.count($result -> tracks -> items[$i] -> album -> available_markets) .' countries </div>';
-            echo '</div>';
-            echo '</div>';
+              $arrayfound[] = $i;
             
                 $found += 1;
                 $same = 0;
@@ -75,6 +58,32 @@
         }
         if($found == 0){
             echo "not found";
+        }else{
+          $number = 0;
+          foreach($arrayfound as $i){
+            if($number % 3 == 0 ){
+              echo "<div class=row>";
+            }
+            echo "<div class='col-4'>";
+            echo '<div class="card" style="width: 18rem;">';
+            echo '<img class="card-img-top" src="'.$result -> tracks -> items[$i] -> album -> images[0] -> url.'" alt="Card image cap">';
+            echo '<div class="card-body">';
+            echo '<h5 class="card-title">'.$result -> tracks -> items[$i] -> album -> name.'</h5>';
+            echo '<div class="card-text">Artists : '.$result -> tracks -> items[$i] -> album -> artists[0] -> name.'</div>';
+            echo '<div class="card-text">Release date : '.$result -> tracks -> items[$i] -> album -> release_date .'</div>';
+            echo '<div class="card-text">Avaliable : '.count($result -> tracks -> items[$i] -> album -> available_markets) .' countries </div>';
+            echo '</div>';
+            echo '</div>';
+            echo "</div>";
+            $number += 1;
+            if($number % 3 == 0 ){
+              echo "</div>";
+            }
+            
+          }
+          if(!($number % 3 == 0 )){
+            echo "</div>";
+          }
         }
   }else{
     for ($i=0; $i < 6 ; $i+= 3) { 
